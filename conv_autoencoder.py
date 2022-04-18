@@ -19,7 +19,7 @@ import chess
 import pandas
 import matplotlib.pyplot as plt
 
-FILE_NAME = "small_fen_data.csv"
+FILE_NAME = "fen_data.csv"
 EPOCHS = 1
 BATCH_SIZE = 256
 
@@ -108,9 +108,7 @@ class my_Dataset(Dataset):
         return pandas.read_csv(FILE_NAME, sep = "|")
 
     def __init__(self):
-        print("loading tables...", end = '\r')
         self.table = self.load_table()
-        print("loading complete", end = '\r')
 
 
     def __len__(self):
@@ -172,7 +170,7 @@ def main():
     # traced_script_module.save("autoencoder.pt")
 
     plt.plot(losses)
-    plt.savefig("\\home\\conv_autoencoder-loss-plot")
+    plt.savefig("conv_autoencoder-loss-plot")
 
 if __name__ == "__main__":
     main()
