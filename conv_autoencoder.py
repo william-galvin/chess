@@ -172,22 +172,11 @@ def main():
     # traced_script_module.save("autoencoder.pt")
 
     plt.plot(losses)
-    plt.savefig("conv_autoencoder-loss-plot")
+    plt.savefig("\\home\\conv_autoencoder-loss-plot")
 
 if __name__ == "__main__":
     main()
 
-
-def main():
-    
-    start = time.time()
-    table = pandas.read_csv(FILE_NAME, sep = "|")
-    for _ in range(100):
-        for _, row in table.iterrows():
-            position_to_conv_tensor(row[0])
-    print(f"conv: {timeSince(start)}")
-
-main()
 
     
     
