@@ -92,18 +92,12 @@ class Autoencoder(Module):
         )
         
     def forward(self, x):
-        print("calling forward...")
-        print(x.size())
         x = self.encode_layers(x)
-        print(x.size()) # torch.Size([4, 128, 6, 8, 8])
         x = self.encode_layers_2(x)
-        print(x.size()) # torch.Size([4, 128, 6, 8, 8])
         x = self.decode_layers(x)
         size = int(x.size()[0]*x[0].size()[0]/(32*6*8*8))
-        print(f"size is {size}")
         x = torch.reshape(x, [size, 32, 6, 8, 8])
         x = self.decode_layers_2(x)
-        print(x.size())
         return x
 
 
