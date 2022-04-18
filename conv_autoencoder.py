@@ -175,7 +175,7 @@ def main():
     train_model(model)
 
     model.eval()
-    example = position_to_conv_tensor("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") # where do these nums come from??
+    example = torch.rand(2, 6, 8, 8)
     traced_script_module = torch.jit.trace(model, example)
     traced_script_module.save("autoencoder.pt")
 
