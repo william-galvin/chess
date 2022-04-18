@@ -166,7 +166,7 @@ def main():
     train_model(model)
 
     model.eval()
-    example = torch.rand(2, 6, 8, 8)
+    example = torch.rand(1, 32 * 6 * 8 * 8)
     traced_script_module = torch.jit.trace(model, example)
     traced_script_module.save("autoencoder.pt")
 
