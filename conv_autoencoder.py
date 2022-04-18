@@ -166,10 +166,10 @@ def main():
     model = Autoencoder()
     train_model(model)
 
-    model.eval()
-    example = torch.rand(2, 6, 8, 8)
-    traced_script_module = torch.jit.trace(model, example)
-    traced_script_module.save("autoencoder.pt")
+    # model.eval()
+    # example = torch.rand(2, 6, 8, 8)
+    # traced_script_module = torch.jit.trace(model, example)
+    # traced_script_module.save("autoencoder.pt")
 
     plt.plot(losses)
     plt.savefig("autoencoder-loss-plot")
