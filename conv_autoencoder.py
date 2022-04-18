@@ -63,6 +63,7 @@ class Autoencoder(Module):
         )
         self.encode_layers_2 = Sequential(
             # Fully cinnected linear layers that result in a flat tensor on length 100
+            Flatten(),
             Linear(in_features=32*8*8*6, out_features=4096, device=device, dtype=torch.float32),
             ReLU(inplace=True),
             Linear(in_features=4096, out_features=1024, device=device, dtype=torch.float32),
@@ -166,7 +167,7 @@ def main():
     train_model(model)
 
     model.eval()
-    example = torch.rand(1, 32 * 6 * 8 * 8)
+    example = torch.rand(2, 6, 8, 8)
     traced_script_module = torch.jit.trace(model, example)
     traced_script_module.save("autoencoder.pt")
 
