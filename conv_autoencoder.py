@@ -172,7 +172,7 @@ def main():
     # traced_script_module.save("autoencoder.pt")
 
     plt.plot(losses)
-    plt.savefig("autoencoder-loss-plot")
+    plt.savefig("conv_autoencoder-loss-plot")
 
 if __name__ == "__main__":
     main()
