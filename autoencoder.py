@@ -22,7 +22,7 @@ import numpy as np
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 gpu = "'cuda:0'" if torch.cuda.is_available() else "'cpu'"
 
-EPOCHS = 15
+EPOCHS = 50
 FILE_NAME = "data.tsv"
 
 class Autoencoder(Module):
@@ -63,9 +63,9 @@ class my_Dataset(Dataset):
         return pandas.read_csv(FILE_NAME, sep = "\t")
 
     def __init__(self):
-        print("loading tables...", end = '\r')
+        print("loading tables...", end = '')
         self.table = self.load_table()
-        print("loading complete", end = '\r')
+        print("loading complete", end = '')
 
 
     def __len__(self):
@@ -110,7 +110,7 @@ def train_model(model):
     criterion = MSELoss()
     train_dl, test_dl = prepare_data()
     for epoch in range(EPOCHS):
-        print(f"{epoch}/{EPOCHS}\t time since start: {timeSince(start)}", end='\r')
+        print(f"{epoch}/{EPOCHS}\t time since start: {timeSince(start)}", end='')
         for i, (input, _) in enumerate(train_dl):
             # clear the gradients
             optimizer.zero_grad()
