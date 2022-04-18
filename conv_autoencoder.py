@@ -95,6 +95,7 @@ class Autoencoder(Module):
     def forward(self, x):
         x = self.encode_layers(x)
         x = self.encode_layers_2(x)
+        x = torch.flatten(x)
         x = self.decode_layers(x)
         size = int(x.size()[0]*x[0].size()[0]/(32*6*8*8))
         x = torch.reshape(x, [size, 32, 6, 8, 8])
