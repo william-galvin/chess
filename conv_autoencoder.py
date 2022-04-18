@@ -153,10 +153,7 @@ def train_model(model):
             # compute the model output
             yhat = model(input)
             # calculate loss
-            print(input[0].size())
-            print(yhat.size())
             loss = criterion(yhat, input)
-            print("checkpoint 1")
             losses.append(loss.cpu().detach().numpy())
             # credit assignment
             loss.backward()
