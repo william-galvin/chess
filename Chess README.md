@@ -36,8 +36,7 @@ With details on how implementations were done:
 
 Where $P_{1} \dots P_{n}$ are the positions resulting from making the moves 1 . . . n, and $f(a, b)$ is the neural network function described above, then
 
-<img src="https://render.githubusercontent.com/render/math?math=
-\begin{array} {rcl}
+<img src="https://render.githubusercontent.com/render/math?math=\begin{array} {rcl}
 P_1 - P_2 & = & f(P_1, P_2) \\
 P_1 - P_3 & = & f(P_1, P_3) \\
 & \vdots & \\
