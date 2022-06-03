@@ -105,3 +105,4 @@ rhs.push(100f64);
 
 The resulting vector $x$, which was $\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$, gives us the *relative scores* of each position $P$, such that $x_i$ is the score for $P_i$, and finding the maximum $P$ gives us the best move. 
 ## Next Steps / TODOs
+<img src="https://render.githubusercontent.com/render/math?math=e^{i \pi} = -1">
