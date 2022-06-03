@@ -34,9 +34,7 @@ With details on how implementations were done:
 	- $f(a, b) \longrightarrow$ a > b;  $f(b, c) \longrightarrow$ b > c; $f(a, c) \longrightarrow$ a < c
 - What real-world siutation does this remind you of? Sports & power rankings!
 
-Where $P_{1} \dots P_{n}$ are the positions resulting from making the moves 1 . . . n, and $f(a, b)$ is the neural network function described above, then
-
-<img src="https://render.githubusercontent.com/render/math?math=\begin{array} {rcl}
+Where $P_{1} \dots P_{n}$ are the positions resulting from making the moves 1 . . . n, and $f(a, b)$ is the neural network function described above, then $$ \begin{array} {rcl}
 P_1 - P_2 & = & f(P_1, P_2) \\
 P_1 - P_3 & = & f(P_1, P_3) \\
 & \vdots & \\
@@ -62,10 +60,8 @@ P_n - P_{n-1} & = & f(P_{n}, P_{n-1}) \\
 \vdots \\
 0 & 0 & \dots & -1 & 1 \\
 \end{array} \right) 
-
 \left( \begin{array} {c}
-P_1 \\ P_2 \\ \vdots \\ P_n
-\end{array} \right) 
+P_1 \\ P_2 \\ \vdots \\ P_n \end{array} \right) 
 =
 \left(
 \begin{array} {c}
@@ -78,7 +74,7 @@ f(P_2, P_3) \\
 f(P_2, P_n) \\
  \vdots  \\
 f(P_{n}, P_{n-1}) \\
-\end{array} \right)">
+\end{array} \right) $$
 
 Letting $A$ equal the $n(n - 1) \times n$ matrix on the left, $x$ equal $\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$  and $b$ equal the right hand side vector, then we can solve the over determined system of equations by taking $A^TAx = A^Tb$ and solving for $x$ using QR-decomposition (or any other method you like). 
 
