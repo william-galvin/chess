@@ -36,7 +36,8 @@ With details on how implementations were done:
 
 Where $P_{1} \dots P_{n}$ are the positions resulting from making the moves 1 . . . n, and $f(a, b)$ is the neural network function described above, then
 
-$\begin{array} {rcl}
+<img src="https://render.githubusercontent.com/render/math?math=
+\begin{array} {rcl}
 P_1 - P_2 & = & f(P_1, P_2) \\
 P_1 - P_3 & = & f(P_1, P_3) \\
 & \vdots & \\
@@ -78,7 +79,7 @@ f(P_2, P_3) \\
 f(P_2, P_n) \\
  \vdots  \\
 f(P_{n}, P_{n-1}) \\
-\end{array} \right)$
+\end{array} \right)">
 
 Letting $A$ equal the $n(n - 1) \times n$ matrix on the left, $x$ equal $\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$  and $b$ equal the right hand side vector, then we can solve the over determined system of equations by taking $A^TAx = A^Tb$ and solving for $x$ using QR-decomposition (or any other method you like). 
 
@@ -105,4 +106,4 @@ rhs.push(100f64);
 
 The resulting vector $x$, which was $\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$, gives us the *relative scores* of each position $P$, such that $x_i$ is the score for $P_i$, and finding the maximum $P$ gives us the best move. 
 ## Next Steps / TODOs
-<img src="https://render.githubusercontent.com/render/math?math=e^{i \pi} = -1">
+
