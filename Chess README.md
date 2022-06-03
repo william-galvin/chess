@@ -44,7 +44,7 @@ P_2 - P_3 & = & f(P_2, P_3) \\
 P_2 - P_n & = & f(P_2, P_n) \\
 & \vdots & \\
 P_n - P_{n-1} & = & f(P_{n}, P_{n-1}) \\
-\end{array}
+\end{array} $$
 
 \longrightarrow
 \left( \begin{array} {r}
