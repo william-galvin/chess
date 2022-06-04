@@ -34,7 +34,13 @@ With details on how implementations were done:
 	- $f(a, b) \longrightarrow$ a > b;  $f(b, c) \longrightarrow$ b > c; $f(a, c) \longrightarrow$ a < c
 - What real-world siutation does this remind you of? Sports & power rankings!
 
-Where $P_{1} \dots P_{n}$ are the positions resulting from making the moves 1 . . . n, and $f(a, b)$ is the neural network function described above, then $$ \begin{array} {rcl}
+Where $P_{1} \dots P_{n}$ are the positions resulting from making the moves 1 . . . n, and $f(a, b)$ is the neural network function described above, then $$ 
+
+A = b
+
+$$
+
+\begin{array} {rcl}
 P_1 - P_2 & = & f(P_1, P_2) \\
 P_1 - P_3 & = & f(P_1, P_3) \\
 & \vdots & \\
@@ -82,7 +88,7 @@ Letting $A$ equal the $n(n - 1) \times n$ matrix on the left, $x$ equal $\left( 
 let x = A.qr().solve(&b).unwrap();
 let mut moves_and_scores = vec![];
 for (i, item) in moves_and_tensors.iter().enumerate() {
-	moves_and_scores.push((item.0, x[i]))
+    moves_and_scores.push((item.0, x[i]))
 }
 
 let mut result = self.sort_moves(moves_and_scores);
@@ -94,7 +100,7 @@ return result;
 To determine a unique solution, first append $\left( \begin{array} {c} 1 & 1 & \dots & 1 \end{array} \right)$  to $A$ and any arbitrary constant to $b$ 
 ```Rust
 for i in 0..n {
-	A[(row, i)] = 1f64;
+    A[(row, i)] = 1f64;
 }
 rhs.push(100f64);
 ```
