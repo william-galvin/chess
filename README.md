@@ -174,12 +174,11 @@ Once I have a subset of the legal moves,which according to negamax and the pimit
 
 Letting $f(a, b)$ be the NN comparison between positions $a$ and $b$, we should note that the model is not interiely commutative (it slightly prefers white in objectively equal positons): $f(a, b) \neq -f(b, a)$. It follows therein that if $f(a, b) \longrightarrow$ a > b and  $f(b, c) \longrightarrow$ b > c, it is **not necessarily true** that  $f(a, c) \longrightarrow$ a > c.
 
-This reminded me of power rankings in sports leagues, where the Yankees can beat the Red Sox, the Red Sox can beat the Cubs, and the Cubs can beat the Yankees. How do we pick the best team? [Kenneth Massey](https://en.wikipedia.org/wiki/Kenneth_Massey)devised a technique that I adapted and will briefly descibe below:
+This reminded me of power rankings in sports leagues, where the Yankees can beat the Red Sox, the Red Sox can beat the Cubs, and the Cubs can beat the Yankees. How do we pick the best team? [Kenneth Massey](https://en.wikipedia.org/wiki/Kenneth_Massey) devised a technique that I adapted and will briefly descibe below:
 
 Let $P_{1} \dots P_{n}$ be the positions resulting from making the moves 1 . . . n, and $f(a, b)$ be the neural network function described above, then create the matrices as follows:
 
-$$
-\begin{array} {rcl}
+$$ \begin{array} {rcl}
 P_1 - P_2 & = & f(P_1, P_2) \\
 P_1 - P_3 & = & f(P_1, P_3) \\
 & \vdots & \\
