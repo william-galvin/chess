@@ -454,30 +454,3 @@ fn main() {
         }
     }
 }
-
-// TODO:
-//      - NN eval function
-//              - Where do we actually use the evals? Some ideas:
-//                  1. Pure comparison between current position and positions immediately after ("tournament" between all possible positions?)
-//                      - Use this to CHOOSE or to ORDER?
-//                      - If order, do it with smallest matrix possible
-//                      - If choose, need to do a lot more training
-//                  2. Pure comparison between current position and positions far after (see deepchess for how to do alpha-beta)
-//                  3. Some combination of deep look ahead for material, shallow for comparison
-//                      - Only compare moves within some material eval threshold (AFTER doing DFS)?
-//      - Figure out iterative deepening?
-//      - Move ordering? (Ideally, this should come FROM iterative deepening)
-//      - Persistent lookup_table?
-//              - (local? cloud?) database for persistent lookup_table?
-//              - What does this look like without tree search?
-//      - Over the horizon evaluation (quiescence?)
-//      - More sophisticated by-hand-eval (pawn structure, king safety)
-//      - Set params from GUI?
-//      - Think on players time--precompute moves and store in lookup_table?
-//          - How do we pick which moves to search for?
-//          - Must be able to stop searching INSTANTLY when GO signal comes in--otherwise, not useful at all
-//              - Want to use threading; unsure how to (or even if SHOULD) kill thread on new GO
-//          - DO TREE SEARCH THINKING HERE
-//      - Make it actually UCI compatible
-//
-
