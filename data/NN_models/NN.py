@@ -27,9 +27,7 @@ def timeSince(since):
     return '%dm %ds' % (m, s)
 
 def load_table():
-    #return pandas.read_csv("C:\\Users\\willi\\OneDrive\\Documents\\chess vol 2\\google cloud stuff\\data.tsv", sep = "\t")
     return pandas.read_csv("fen_data.csv", sep = "|")
-    #return pandas.read_csv("stockfish_data.tsv", sep = "|")
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 gpu = "'cuda:0'" if torch.cuda.is_available() else "'cpu'"
@@ -62,18 +60,7 @@ class my_Dataset(Dataset):
         result2 = torch.tensor([int(r2)], device=device, dtype=torch.float32)
         fen2 = self.table.iloc[idx2, 0]
         input2 = self.converter.fen_to_tensor(fen2)
-        # output1 = torch.tensor([int(self.table.iloc[idx, 2])/100], device=device, dtype=torch.float32)
-        # fen1 = self.table.iloc[idx, 0]
-        # input1 = self.converter.fen_to_tensor(fen1)
-        #
-        # idx2 = random.randint(0, self.len - 1)
-        # output2 = torch.tensor([int(self.table.iloc[idx2, 2])/100], device=device, dtype=torch.float32)
-        # fen2 = self.table.iloc[idx2, 0]
-        # input2 = self.converter.fen_to_tensor(fen2)
-        #
-        # output = [1, 0] if output1 > output2 else [0, 1]
-        # output = torch.tensor(output, dtype=torch.float32, device=device)
-
+        
         return torch.cat((input1, input2)), torch.tensor([result1, result2], dtype=torch.float32, device=device)
 
     # get indexes for train and test rows
