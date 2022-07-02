@@ -10,18 +10,18 @@ The chess programming was fun, the Rust was headache-inducing, and the fact that
   * [Neural Networks](#neural-networks)
     + [Acknowledgements](#acknowledgements)
     + [Overview](#overview)
-    + [Chess Position $\longrightarrow$ Tensor](#chess-position---longrightarrow--tensor)
+    + [Chess Position --> Tensor](https://github.com/william-galvin/chess/edit/main/README.md#chess-position-longrightarrow-tensor)
     + [Autoencoder](#autoencoder)
-    + [Inputs, Outputs, and Architecture](#inputs--outputs--and-architecture)
+    + [Inputs, Outputs, and Architecture](https://github.com/william-galvin/chess/edit/main/README.md#chess-position-longrightarrow-tensor)
   * [Chess Server](#chess-server)
     + [UCI](#uci)
     + [Nega-Max](#nega-max)
     + [Evaluations](#evaluations)
     + [Using the Model](#using-the-model)
-    + ["Tournament" Method](#-tournament--method)
+    + ["Tournament" Method](https://github.com/william-galvin/chess/edit/main/README.md#tournament-method)
     + [Opening Book and Endgame Tablebase](#opening-book-and-endgame-tablebase)
   * [Reflections](#reflections)
-  * [Next Steps / TODOs](#next-steps---todos)
+  * [Next Steps / TODOs](https://github.com/william-galvin/chess/edit/main/README.md#next-steps--todos)
 
 ## Installation and Usage
 This repo is not meant to be immediately usable in its current form. Theoretically, you could download `NN.pt` and `chess_bot.exe` and use direct a chess GUI to the `.exe` and it *might* work.
@@ -32,7 +32,7 @@ I wanted to start learning several things, all at once, with very little prior e
 ## Project Structure
 There are two main components to this project. The first is the actual chess-playing logic, which is in `src/main.rs`. (More on that below.)
 
-The second, larger but arguably less interesting, part is the neural networks written in PyTorch. If it looks suspiciously like the code in `data` was lifted directly from tutorials and forums and whatnot, it's probably because it was. Many of the design choices in this section are arbitrary, too—if you ask me, *Why are there $x$ layers instead of $y$?* Or, *How did you pick that activation function?* Or, *What's up with specifically 15 epochs?* I won't have a good answer.
+The second, larger but arguably less interesting, part is the neural networks written in PyTorch. If it looks suspiciously like the code in `data` was lifted directly from tutorials and forums and whatnot, it's probably because it was. Many of the design choices in this section are arbitrary, too—if you ask me, *Why are there x layers instead of y?* Or, *How did you pick that activation function?* Or, *What's up with specifically 15 epochs?* I won't have a good answer.
 
 ## Neural Networks
 ### Acknowledgements
@@ -67,7 +67,16 @@ For each square (starting at A1 and ending at H8), create a 12 $\times$ 1 zero-t
 | White King   | 10    |
 | Black King   | 11      |
 
-And let $T_{index} \leftarrow$ 1. Then append $T$ to the previous $T$ and continue. Then, if the position is white-to-move, append $\left[ \begin{array}{c}  1 & 0 & 0 & \dots & 0 \end{array} \right]$, else append $\left[ \begin{array}{c}  0 & 1 & 0 & \dots & 0 \end{array} \right]$.
+And let 
+$T_{index} \leftarrow 1$
+. Then append 
+$T$
+to the previous 
+$T$
+and continue. Then, if the position is white-to-move, append 
+$\left[ \begin{array}{c}  1 & 0 & 0 & \dots & 0 \end{array} \right]$
+, else append 
+$\left[ \begin{array}{c}  0 & 1 & 0 & \dots & 0 \end{array} \right]$.
 
 In code: 
 ```Rust
@@ -145,7 +154,7 @@ For positions in which the game isn't over, the simplest possible evaluation fun
 ### Using the Model
 Instead of personally spending hours perfecting a handmade eval function, I tried to let the NN handle that. Good eval functions look at not just material, but also positional advantages, tempo, and other fancy chess things, and that's theoretically what the NN was learning to recognize as it trained.
 
-To actually use the model in Rust, I used the [tch](https://docs.rs/tch/latest/tch/)crate:
+To actually use the model in Rust, I used the [tch](https://docs.rs/tch/latest/tch/) crate:
 
 ```Rust
 /// Takes two tensors and returns a f64.
@@ -204,10 +213,7 @@ P_n - P_{n-1} & = & f(P_{n}, P_{n-1}) \\
 \vdots \\
 0 & 0 & \dots & -1 & 1 \\
 \end{array} \right) 
-\left( \begin{array} {c}
-P_1 \\ P_2 \\ \vdots \\ P_n \end{array} \right) =
-\left(
-\begin{array} {c}
+\left( \begin{array} {c} P_1 \\ P_2 \\ \dots \\ P_n \end{array} \right)^{T}=\left(=\begin{array} {c}
 f(P_1, P_2) \\
 f(P_1, P_3) \\
 \vdots & \\
@@ -220,11 +226,26 @@ f(P_{n}, P_{n-1}) \\
 \end{array} \right)
 $$
 
-Letting $A$ equal the $n(n - 1) \times n$ matrix on the left, $x$ equal $\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$  and $b$ equal the right hand side vector, then we can solve the over determined system of equations by taking $A^TAx = A^Tb$ and solving for $x$ using QR-decomposition (or any other method you like). 
+
+Letting 
+$A$ 
+equal the 
+$n(n - 1) \times n$ 
+matrix on the left, 
+$x$
+equal 
+$\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$
+and 
+$b$
+equal the right hand side vector, then we can solve the over determined system of equations by taking $A^TAx = A^Tb$ and solving for $x$ using QR-decomposition (or any other method you like). 
 
 (But to determine a unique solution, first append $\left( \begin{array} {c} 1 & 1 & \dots & 1 \end{array} \right)$  to $A$ and any arbitrary constant to $b$ .)
 
-The resulting vector $x$, which was $\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$, gives us the *relative scores* of each position $P$, such that $x_i$ is the score for $P_i$, and finding the maximum $P$ gives us the best move. 
+The resulting vector 
+$x$
+, which was 
+$\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$
+, gives us the *relative scores* of each position $P$, such that $x_i$ is the score for $P_i$, and finding the maximum $P$ gives us the best move. 
 
 The code for this is the extraordinarily long function called `fn get_best_move_tournament`
 
