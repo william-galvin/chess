@@ -73,7 +73,9 @@ $T_{index} \leftarrow 1$
 $T$
 to the previous 
 $T$
-and continue. Then, if the position is white-to-move, append 
+and continue. 
+
+Then, if the position is white-to-move, append 
 $\left[ \begin{array}{c}  1 & 0 & 0 & \dots & 0 \end{array} \right]$
 , else append 
 $\left[ \begin{array}{c}  0 & 1 & 0 & \dots & 0 \end{array} \right]$.
