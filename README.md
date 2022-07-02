@@ -24,7 +24,7 @@ The chess programming was fun, the Rust was headache-inducing, and the fact that
   * [Next Steps / TODOs](https://github.com/william-galvin/chess/edit/main/README.md#next-steps--todos)
 
 ## Installation and Usage
-This repo is not meant to be immediately usable in its current form. Theoretically, you could download `NN.pt` and `chess_bot.exe` and use direct a chess GUI to the `.exe` and it *might* work.
+This repo is not meant to be immediately usable in its current form. Theoretically, you could download `NN.pt` and `chess_bot.exe` and direct a chess GUI to the `.exe` and it *might* work.
 
 ## Motivation
 I wanted to start learning several things, all at once, with very little prior experience in any of them: Rust, Machine Learning, and being good at chess. I also had a $300 Google Cloud credit to spend, and what better way to do that than spending weeks training the same models over and over again, anxiously tweaking the hyperparameters?
