@@ -190,7 +190,6 @@ P_2 - P_n & = & f(P_2, P_n) \\
 & \vdots & \\
 P_n - P_{n-1} & = & f(P_{n}, P_{n-1}) \\
 \end{array}
-
 \longrightarrow
 \left( \begin{array} {r}
 1 & -1 & 0 & \dots & 0 \\
@@ -205,7 +204,6 @@ P_n - P_{n-1} & = & f(P_{n}, P_{n-1}) \\
 \vdots \\
 0 & 0 & \dots & -1 & 1 \\
 \end{array} \right) 
-
 \left( \begin{array} {c}
 P_1 \\ P_2 \\ \vdots \\ P_n \end{array} \right) =
 \left(
