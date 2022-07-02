@@ -107,4 +107,15 @@ rhs.push(100f64);
 
 The resulting vector $x$, which was $\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$, gives us the *relative scores* of each position $P$, such that $x_i$ is the score for $P_i$, and finding the maximum $P$ gives us the best move. 
 ## Next Steps / TODOs
-
+- Make the program *actually* UCI-compatible
+- Add functionality to play on Lichess
+	- [https://github.com/ShailChoksi/lichess-bot](https://github.com/ShailChoksi/lichess-bot) could be helpful
+	- Ultimately only worth it if I can have it run indefinitely on the cloud
+- Implement iterative deepening—theoretically, this shouldn’t be too hard, but in all my attempts, has never improved search times
+- Move ordering in $\alpha$-$\beta$ search
+	- If not from IDDFS, then potentially use the NN eval function? (Would need a way to do the eval faster; see DeepChess paper)
+- Persistent lookup table
+- Over-the-horizon (quiescence) search
+- More refinded manual-static evaluation function
+	- King safety + pawn structure would be a decent place to start
+- Pondering on opponent's time
