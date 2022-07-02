@@ -207,9 +207,7 @@ P_n - P_{n-1} & = & f(P_{n}, P_{n-1}) \\
 \end{array} \right) 
 
 \left( \begin{array} {c}
-P_1 \\ P_2 \\ \vdots \\ P_n
-\end{array} \right) 
-=
+P_1 \\ P_2 \\ \vdots \\ P_n \end{array} \right) =
 \left(
 \begin{array} {c}
 f(P_1, P_2) \\
