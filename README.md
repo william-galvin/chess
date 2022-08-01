@@ -142,12 +142,14 @@ fn main() {
 Where each function uses `writeln!()` to communicate with the GUI.
 
 ### Nega-Max
-To do the tree-search component, I used an implementation of $\alpha$-$\beta$ search called [nega-max](https://en.wikipedia.org/wiki/Negamax#:~:text=Negamax%20search%20is%20a%20variant,the%20value%20to%20player%20B.). I used both pruning and a hashmap-based lookup table to improve search speed. 
+To do the tree-search component, I used an implementation of $\alpha$-
+$\beta$ search called [nega-max](https://en.wikipedia.org/wiki/Negamax#:~:text=Negamax%20search%20is%20a%20variant,the%20value%20to%20player%20B.). I used both pruning and a hashmap-based lookup table to improve search speed. 
 
 Code for this is in `fn nega_max` and `pub fn go`.
 
 ### Evaluations
-One of the assumptions that $\alpha$-$\beta$ search relies on is that for any given position, we have some halfway-decent heuristic for evaluating how good the position is for either side.
+One of the assumptions that $\alpha$-
+$\beta$ search relies on is that for any given position, we have some halfway-decent heuristic for evaluating how good the position is for either side.
 
 If the position is a checkmate, it's pretty easy. We can just return `depth * 999999` which is clever in two ways: first we don't have to worry about whose turn it is, since a player can't have put themselves in checkmate the previous turn; and second, using `depth * 999999` instead of some more rustic representation of $\infty$ because this will prioritize quicker checkmates.
 
@@ -263,7 +265,8 @@ There's no way to get around it: this is not a world-class chess program. But, f
 	- [https://github.com/ShailChoksi/lichess-bot](https://github.com/ShailChoksi/lichess-bot) could be helpful
 	- Ultimately only worth it if I can have it run indefinitely on the cloud
 - Implement iterative deepening—theoretically, this shouldn’t be too hard, but in all my attempts, has never improved search times
-- Move ordering in $\alpha$-$\beta$ search
+- Move ordering in $\alpha$-
+$\beta$ search
 	- If not from IDDFS, then potentially use the NN eval function? (Would need a way to do the eval faster; see DeepChess paper)
 - Persistent lookup table
 - Over-the-horizon (quiescence) search
