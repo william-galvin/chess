@@ -1,7 +1,5 @@
 # Chess Programming!
-I made a (mostly) UCI-compatible chess engine built with PyTorch and Rust that plays like a very smart third grader and sometimes beats me.
-
-The chess programming was fun, the Rust was headache-inducing, and the fact that the ML worked as well as it did and seemed to sort of understand chess by the end was awe-inspiring.
+A chess engine that combines unsupervised machine learning with classic chess programming techniques and is (mostly) UCI-compatible. 
 
 # Table of contents
   * [Installation and Usage](#installation-and-usage)
@@ -24,28 +22,31 @@ The chess programming was fun, the Rust was headache-inducing, and the fact that
   * [Next Steps / TODOs](https://github.com/william-galvin/chess/edit/main/README.md#next-steps--todos)
 
 ## Installation and Usage
-This repo is not meant to be immediately usable in its current form. Theoretically, you could download `NN.pt` and `chess_bot.exe` and direct a chess GUI to the `.exe` and it *might* work.
+This repo is not meant to be immediately usable in its current form. In theory, the whole codebase could be recreated from `NN.pt` and `main.rs`—but the current project structure isn’t really conducive to building the way most Rust projects should be. (In my defense, this was the first Rust code I’d ever written, so with hindsight I’d do it differently.)
 
 ## Motivation
-I wanted to start learning several things, all at once, with very little prior experience in any of them: Rust, Machine Learning, and being good at chess. I also had a $300 Google Cloud credit to spend, and what better way to do that than spending weeks training the same models over and over again, anxiously tweaking the hyperparameters?
+I wanted to start learning several things, all at once, with very little prior experience in any of them: Rust, Machine Learning, and being good at chess. I also had a $300 Google Cloud credit to spend, and what better way to do that than spending weeks training the same models over and over again, frantically tweaking the hyperparameters?
+
+And overall, I would say this project was largely successful to those ends. I know a bit about Rust, I’m out of GCP money, and I’m (at least temporarily) cured of my desire to play chess. Also, the engine plays a decent game of chess and the machine learning is able to pick out some not-terrible moves.
+
 
 ## Project Structure
 There are two main components to this project. The first is the actual chess-playing logic, which is in `src/main.rs`. (More on that below.)
 
-The second, larger but arguably less interesting, part is the neural networks written in PyTorch. If it looks suspiciously like the code in `data` was lifted directly from tutorials and forums and whatnot, it's probably because it was. Many of the design choices in this section are arbitrary, too—if you ask me, *Why are there x layers instead of y?* Or, *How did you pick that activation function?* Or, *What's up with specifically 15 epochs?* I won't have a good answer.
+The second, larger, part is the neural networks written in PyTorch. A lot of the code is taken from various tutorials—and as I’m certainly no expert in ML, many of the choices about architecture and structure are either copied from academic papers or entirely arbitrary. As well, a significant amount of boilerplate, especially in the autoencoder’s layers, is redundant between files, which is something to be improved upon going forward 
 
 ## Neural Networks
 ### Acknowledgements
-Thank you to the author's of [DeepChess](https://www.researchgate.net/publication/306081185_DeepChess_End-to-End_Deep_Neural_Network_for_Automatic_Learning_in_Chess), the paper that provided a roadmap for my program. By roadmap, I mean I basically implemented the whole thing, just not as well.
+Thank you to the author's of [DeepChess](https://www.researchgate.net/publication/306081185_DeepChess_End-to-End_Deep_Neural_Network_for_Automatic_Learning_in_Chess), the paper that provided a roadmap for my program. There are a few key differences in my implementation (which, admittedly, probably make it worse) that I discuss below, but DeepChess provided the foundation for this project.
 
 I would also like to specifically thank the maintaners of the unofficial [Lichess Master's Database](https://database.nikonoel.fr/), from which my data was sourced.
 
-And of course, every kind (and not so kind) soul that's ever answered any question on any forum (yes, I mean *all of them*).
+And of course, every kind (and not so kind) soul that's ever answered any question on any forum :)
 
 ### Overview
-The big idea behind the neural network component of this project was this: If I had a giant database full of chess positions annoted with who won the game from which the position came, I could then train a NN to look at two positions, and tell me which one white was more likely to win. (This is dircetly from DeepChess.)
+The big idea behind the neural network component of this project is this: If I have a giant database full of chess positions, each annoted with who won the game from which the position came, I could then train a NN to look at two positions, and tell me which one white was more likely to win. (This idea is proposed by DeepChess.)
 
-Then, that could be used to order some or all of the legal moves from a position *where we don't know who's going to win because we're in the middle of the game*.
+Then, that could be used to rank some or all of the legal moves from a position *where we don't know who's going to win, because we're in the middle of the game*.
 
 ### Chess Position $\longrightarrow$ Tensor
 To transform a chess position into a usable input for a neural network, I represented the board as a 780 $\times$ 1 vector, where each entry is a bit (1 or 0) and is determined as follows: 
@@ -107,7 +108,7 @@ fn to_array(&self) -> [f32; 780] {
 ```
 
 ### Autoencoder
-Shockingly, the above encodings don't work particularly well for training a NN. Something about ✨discontinuity✨ or something. So the first step was to pre-train an autoencoder to compress and then decompress a tensor representation of a position from 780 numbers to 600, then from 600 to 400, then 400 to 200, and finally 200 to 100. 
+Shockingly, the above encodings don't work particularly well for training a NN. (Something about discontinuity or something.) So the first step was to pre-train an autoencoder to compress and then decompress a tensor representation of a position from 780 numbers to 600, then from 600 to 400, then 400 to 200, and finally 200 to 100. 
 
 This is supposed to automate *feature extraction* and lets us have a tensor with only 100 values in our actual input.
 
@@ -118,8 +119,8 @@ The architecture of the model was copied, with slight variation, from DeepChess.
 
 
 ## Chess Server
-### UCI
-The big idea with UCI is that a chess GUI can talk to a chess engine via predefined phrases in standard IO. For example, if the GUI sends `go`, then the chess engine should send back the best move in the position, like `bestmove e2e4`, which the GUI will then play on behalf of the engine.
+### Universal Chess Interface (UCI)
+The fundamental idea behind UCI is that a chess GUI can talk to a chess engine via predefined phrases in standard IO. For example, if the GUI sends `go`, then the chess engine should send back the best move in the position, like `bestmove e2e4`, which the GUI will then play on behalf of the engine.
 
 This is very helpful because it means I don't have to be good at front end things. I used the [vampirc_uci](https://docs.rs/vampirc-uci/latest/vampirc_uci/) crate to help with this. In code, using UCI looks like:
 ```Rust
@@ -142,18 +143,18 @@ fn main() {
 Where each function uses `writeln!()` to communicate with the GUI.
 
 ### Nega-Max
-To do the tree-search component, I used an implementation of $\alpha$-
+To do the tree-search component, I used an implementation of $\alpha$ -
 $\beta$ search called [nega-max](https://en.wikipedia.org/wiki/Negamax#:~:text=Negamax%20search%20is%20a%20variant,the%20value%20to%20player%20B.). I used both pruning and a hashmap-based lookup table to improve search speed. 
 
 Code for this is in `fn nega_max` and `pub fn go`.
 
 ### Evaluations
-One of the assumptions that $\alpha$-
+One of the assumptions that $\alpha$ -
 $\beta$ search relies on is that for any given position, we have some halfway-decent heuristic for evaluating how good the position is for either side.
 
 If the position is a checkmate, it's pretty easy. We can just return `depth * 999999` which is clever in two ways: first we don't have to worry about whose turn it is, since a player can't have put themselves in checkmate the previous turn; and second, using `depth * 999999` instead of some more rustic representation of $\infty$ because this will prioritize quicker checkmates.
 
-For positions in which the game isn't over, the simplest possible evaluation function is to just count material, which is what I ended up doing. Crafting (or trying to) a handmade eval function was not only tedious and made the program execute slower, but also didn't always make for a better chess program. But in future iterations, this could be a low-hanging way to add performance.
+For positions in which the game isn't over, the simplest possible evaluation function is to just count material, which is what I ended up doing. Crafting (or trying to) a handmade eval function was not only tedious and made the program execute slower, but also didn't always make for a better chess program. But in future iterations, this could be a low-hanging fruit to boost performance.
 
 ### Using the Model
 Instead of personally spending hours perfecting a handmade eval function, I tried to let the NN handle that. Good eval functions look at not just material, but also positional advantages, tempo, and other fancy chess things, and that's theoretically what the NN was learning to recognize as it trained.
@@ -178,12 +179,12 @@ fn compare_positions(&mut self, pos1: &Tensor, pos2: &Tensor) -> f64 {
 }
 ```
 
-But there's still a problem: I wanted a function that evaluated *one* position, but this one compares *two*.
+But there's still a problem: I wanted a function that evaluate *one* position, but this one compares *two*.
 
 ### "Tournament" Method
 This is probably the most significant diversion between my program and DeepChess. While they use the comparison directly in their tree-search, I do a non-NN-based tree-search, and then use the results to find the best candidate moves.
 
-Once I have a subset of the legal moves,which according to negamax and the pimitive but fast eval function are the best moves, I can use the NN to compare them to each other to find the best move. The hope is that in this way, "best" can be more about positional advantages than about material. 
+Once I have a subset of the legal moves,which according to negamax and the primitive but fast eval function are the best moves, I can use the NN to compare them to each other to find the best move. The hope is that in this way, "best" can be more about positional advantages than about material. 
 
 Letting $f(a, b)$ be the NN comparison between positions $a$ and $b$, we should note that the model is not interiely commutative (it slightly prefers white in objectively equal positons): $f(a, b) \neq -f(b, a)$. It follows therein that if $f(a, b) \longrightarrow$ a > b and  $f(b, c) \longrightarrow$ b > c, it is **not necessarily true** that  $f(a, c) \longrightarrow$ a > c.
 
@@ -254,10 +255,12 @@ $\left( \begin{array} {c} P_1 & P_2 & \dots & P_n \end{array} \right)^T$
 The code for this is the extraordinarily long function called `fn get_best_move_tournament`
 
 ### Opening Book and Endgame Tablebase
-In a moment of weakness and desire for this chess bot (my son, my only son) to crush its opponents and not play garbage openings and lose completely winning endgames, it reads from the Lichess opening and closing books. Stop looking at me like that, it's *not* cheating!
+In a moment of weakness and desire for this chess bot to crush its opponents and not play garbage openings and lose completely winning endgames, it reads from the Lichess opening and closing books. (Stop looking at me like that, it's *not* cheating!)
 
 ## Reflections
-There's no way to get around it: this is not a world-class chess program. But, for the most part, it makes halfway decent moves and doesn't hang pieces. And I think that is incredible that a neural network can pick those moves, especially one that *I* made, because I have no idea what I'm doing.
+There's no way to get around it: this is not a world-class chess program. But, for the most part, it makes halfway decent moves and doesn't hang pieces. And I think that is incredible that a neural network can pick those moves, especially one that *I* made—because, coming into this, I had no idea what I was doing.
+
+I was very pleasantly surprised by how competent the unsupervised evaluation function was. It’s certainly not perfect, but it does seem to have some understanding of positional advantages beyond simply material count.
 
 ## Next Steps / TODOs
 - Make the program *actually* UCI-compatible
