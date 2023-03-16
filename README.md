@@ -76,10 +76,7 @@ to the previous
 $T$
 and continue. 
 
-Then, if the position is white-to-move, append 
-$\left[ \begin{array}{c}  1 & 0 & 0 & \dots & 0 \end{array} \right]$
-, else append 
-$\left[ \begin{array}{c}  0 & 1 & 0 & \dots & 0 \end{array} \right]$.
+Then, if the position is white-to-move, append $\left[1 \ 0 \ 0 \ \dots \ 0 \right]$, else append $\left[  0 \ 1 \ 0 \ \dots \ 0 \right]$.
 
 In code: 
 ```Rust
